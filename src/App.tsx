@@ -1,5 +1,4 @@
 import SignInForm from './components/SignInForm';
-import TestCompo from './components/TestCompo';
 import SignInProvider from './context/signInProvider';
 
 function App() {
@@ -9,7 +8,6 @@ function App() {
 		<SignInProvider>
 			<div>
 				<SignInForm />
-				{/* <TestCompo /> */}
 			</div>
 		</SignInProvider>
 	);

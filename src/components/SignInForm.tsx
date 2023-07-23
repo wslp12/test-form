@@ -9,8 +9,6 @@ import Button from './Button';
 import { useSignIn } from '../context/signInProvider';
 
 function SignInForm() {
-	// const idRef = useRef<HTMLInputElement | null>(null);
-	// const nameRef = useRef<HTMLInputElement | null>(null);
 	const [idError, setIdError] = useState<IdErrorProps>('init');
 	const [nameError, setNameError] = useState<NameErrorProps>('init');
 	const [submitError, setSubmitError] = useState<SubmitErrorProps>('init');

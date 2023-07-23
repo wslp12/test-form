@@ -6,38 +6,50 @@ import {
 } from '../utils/signin-validator';
 import Input from './Input';
 import Button from './Button';
+import { useSignIn } from '../context/signInProvider';
 
 function SignInForm() {
-	const idRef = useRef<HTMLInputElement | null>(null);
-	const nameRef = useRef<HTMLInputElement | null>(null);
+	// const idRef = useRef<HTMLInputElement | null>(null);
+	// const nameRef = useRef<HTMLInputElement | null>(null);
 	const [idError, setIdError] = useState<IdErrorProps>('init');
 	const [nameError, setNameError] = useState<NameErrorProps>('init');
 	const [submitError, setSubmitError] = useState<SubmitErrorProps>('init');
+	const {
+		signInId,
+		signInName,
+		handleChangeId,
+		handleChangeName,
+		initializeSignInData,
+	} = useSignIn();
 
 	console.count();
+	console.log(signInId, signInName);
 
-	const handleChangeId = (value: string) => {
+	const handleChangeId2 = (value: string) => {
 		console.log('handleChangeId', value);
 		const validateRes = signInIdValidatoer(value);
+		handleChangeId(value);
 		setIdError(validateRes.type);
 	};
 
-	const handleChangeName = (value: string) => {
+	const handleChangeName2 = (value: string) => {
 		console.log('handleChangeName', value);
+		handleChangeName(value);
 		const validateRes = signInNameValidatoer(value);
 		setNameError(validateRes.type);
 	};
 
 	const handleClickSubmit = () => {
-		console.log('handleClickSubmit');
 		const values: { id: string; name: string } = {
-			id: idRef.current?.value ?? '',
-			name: nameRef.current?.value ?? '',
+			id: signInId?.current ?? '',
+			name: signInName?.current ?? '',
 		};
+		console.log('handleClickSubmit', values);
 		const validateRes = singInSubmitValidatoer(values);
 		if (validateRes.success) {
 			// someApi(values)
 			setSubmitError(validateRes.type);
+			initializeSignInData();
 			return;
 		}
 		setSubmitError(validateRes.type);
@@ -52,8 +64,8 @@ function SignInForm() {
 				<section>
 					<span className="text-white">아이디: </span>
 					<Input
-						ref={idRef}
-						onChange={handleChangeId}
+						// ref={idRef}
+						onChange={handleChangeId2}
 					/>
 					{idError === 'length' && (
 						<span className="text-red-600">아이디는 최소 3글자 입니다.</span>
@@ -62,8 +74,8 @@ function SignInForm() {
 				<section>
 					<span className="text-white">이름: </span>
 					<Input
-						ref={nameRef}
-						onChange={handleChangeName}
+						// ref={nameRef}
+						onChange={handleChangeName2}
 					/>
 					{nameError === 'length' && (
 						<span className="text-red-300">이름은 최소 3글자 입니다.</span>

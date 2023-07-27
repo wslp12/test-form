@@ -1,12 +1,29 @@
 import Input from "./components/Input";
 import Button from "./components/Button";
-import { useState } from "react";
+import { useRef } from "react";
+import { z } from "zod";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const schema = z.object({
+  id: z.string().min(3),
+  name: z.string().min(3),
+});
+
+type Schema = z.infer<typeof schema>;
 
 function App() {
-  const [values, setValues] = useState<{ id: string; name: string }>({
-    id: "",
-    name: "",
-  });
+  const state = useRef({ id: "", name: "" } as Schema);
+
+  const handleClick = () => {
+    const result = schema.safeParse(state.current);
+    if (!result.success) {
+      toast.error("필수 폼 항목을 입력해주세요");
+      return;
+    }
+
+    // someApi(someValidValue)
+  };
 
   console.count();
 
@@ -19,24 +36,22 @@ function App() {
         <section>
           <span className="text-white">아이디: </span>
           <Input
-            value={values.id}
-            onChange={(value: string) =>
-              setValues((prev) => ({ ...prev, id: value }))
-            }
+            value={state.current.id}
+            onChange={(value: string) => (state.current.id = value)}
+            rule={schema.shape["id"]}
           />
         </section>
         <section>
           <span className="text-white">이름: </span>
           <Input
-            value={values.name}
-            type="text"
-            onChange={(value: string) =>
-              setValues((prev) => ({ ...prev, name: value }))
-            }
+            value={state.current.name}
+            onChange={(value: string) => (state.current.name = value)}
+            rule={schema.shape["name"]}
           />
         </section>
-        <Button>저장</Button>
+        <Button onClick={handleClick}>저장</Button>
       </div>
+      <ToastContainer />
     </div>
   );
 }

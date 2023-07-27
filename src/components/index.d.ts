@@ -1,5 +1,9 @@
+import { z } from "zod";
+
+
 type ButtonProps = {
     children: React.ReactNode
+    onClick: () => void;
 }
 
 type InputProps = {
@@ -9,4 +13,5 @@ type InputProps = {
     type?: React.InputHTMLAttributes<HTMLInputElement>["type"]
     value: string;
     onChange: (e: any) => void;
+    rule: z.ZodType;
 }

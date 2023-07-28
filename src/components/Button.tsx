@@ -1,8 +1,18 @@
-function Button(props: ButtonProps) {
-    const {children} = props;
+import { ButtonProps } from ".";
 
-    console.count()
-    return <button type="button" className="border border-white p-2 rounded-md w-full text-2xl last:mt-auto shadow-sm shadow-white active:shadow-none hover:scale-[1.01] duration-200 bg-white text-purple-600">{children}</button>
+function Button(props: ButtonProps) {
+  const { children, ...rest } = props;
+
+  console.count();
+  return (
+    <button
+      type="button"
+      className="border border-white p-2 rounded-md w-full text-2xl last:mt-auto shadow-sm shadow-white active:shadow-none hover:scale-[1.01] duration-200 bg-white text-purple-600"
+      {...rest}
+    >
+      {children}
+    </button>
+  );
 }
 
 export default Button;

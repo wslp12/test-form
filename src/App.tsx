@@ -1,12 +1,32 @@
 import Input from "./components/Input";
 import Button from "./components/Button";
-import { useState } from "react";
+import { useObservable } from "@legendapp/state/react";
+import { event } from "@legendapp/state";
+import { z } from "zod";
+import { FormValidation } from "./components";
+
+const schema = z.object({
+  name: z.string().min(3),
+  id: z.string().min(3),
+});
+
+export type StateSchema = FormValidation<z.infer<typeof schema>>;
 
 function App() {
-  const [values, setValues] = useState<{ id: string; name: string }>({
+  const state$ = useObservable<StateSchema>({
     id: "",
     name: "",
+    onValidation: event(),
   });
+
+  const handleClick = () => {
+    const result = schema.safeParse(state$.get());
+    if (!result.success) {
+      state$.onValidation.fire();
+      return;
+    }
+    // someApi(someValidValue)
+  };
 
   console.count();
 
@@ -18,24 +38,13 @@ function App() {
         </div>
         <section>
           <span className="text-white">아이디: </span>
-          <Input
-            value={values.id}
-            onChange={(value: string) =>
-              setValues((prev) => ({ ...prev, id: value }))
-            }
-          />
+          <Input value$={state$} id="id" rule={schema.shape["id"]} />
         </section>
         <section>
           <span className="text-white">이름: </span>
-          <Input
-            value={values.name}
-            type="text"
-            onChange={(value: string) =>
-              setValues((prev) => ({ ...prev, name: value }))
-            }
-          />
+          <Input value$={state$} id="name" rule={schema.shape["name"]} />
         </section>
-        <Button>저장</Button>
+        <Button onClick={handleClick}>저장</Button>
       </div>
     </div>
   );

@@ -1,13 +1,20 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useState, forwardRef, ChangeEvent, ForwardedRef } from 'react';
+import {
+	useState,
+	forwardRef,
+	ChangeEvent,
+	ForwardedRef,
+	useEffect,
+} from 'react';
 
 interface InputProps {
 	type?: string;
 	onChange?: (value: string) => void;
+	isClear: boolean;
 }
 
 function Input(props: InputProps, ref: ForwardedRef<HTMLInputElement | null>) {
-	const { type = 'text', onChange } = props;
+	const { type = 'text', onChange, isClear } = props;
 	const [value, setValue] = useState('');
 
 	console.count();
@@ -16,6 +23,10 @@ function Input(props: InputProps, ref: ForwardedRef<HTMLInputElement | null>) {
 		setValue(e.target.value);
 		onChange?.(e.target.value);
 	};
+
+	useEffect(() => {
+		setValue('');
+	}, [isClear]);
 
 	return (
 		<input

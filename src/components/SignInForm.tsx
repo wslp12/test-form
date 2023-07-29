@@ -12,6 +12,7 @@ function SignInForm() {
 	const [idError, setIdError] = useState<IdErrorProps>('init');
 	const [nameError, setNameError] = useState<NameErrorProps>('init');
 	const [submitError, setSubmitError] = useState<SubmitErrorProps>('init');
+	const [toggleInit, setToggleInit] = useState(false);
 	const {
 		signInId,
 		signInName,
@@ -21,7 +22,6 @@ function SignInForm() {
 	} = useSignIn();
 
 	console.count();
-	console.log(signInId, signInName);
 
 	const handleChangeId2 = (value: string) => {
 		console.log('handleChangeId', value);
@@ -48,6 +48,7 @@ function SignInForm() {
 			// someApi(values)
 			setSubmitError(validateRes.type);
 			initializeSignInData();
+			setToggleInit((prev) => !prev);
 			return;
 		}
 		setSubmitError(validateRes.type);
@@ -62,8 +63,8 @@ function SignInForm() {
 				<section>
 					<span className="text-white">아이디: </span>
 					<Input
-						// ref={idRef}
 						onChange={handleChangeId2}
+						isClear={toggleInit}
 					/>
 					{idError === 'length' && (
 						<span className="text-red-600">아이디는 최소 3글자 입니다.</span>
@@ -72,8 +73,8 @@ function SignInForm() {
 				<section>
 					<span className="text-white">이름: </span>
 					<Input
-						// ref={nameRef}
 						onChange={handleChangeName2}
+						isClear={toggleInit}
 					/>
 					{nameError === 'length' && (
 						<span className="text-red-300">이름은 최소 3글자 입니다.</span>

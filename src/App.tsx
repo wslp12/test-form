@@ -1,44 +1,18 @@
-import Input from "./components/Input";
-import Button from "./components/Button";
-import { useState } from "react";
+import SignInForm from './components/SignInForm';
+import SignInForm2 from './components/SignInForm2';
+import SignInProvider from './context/signInProvider';
 
 function App() {
-  const [values, setValues] = useState<{ id: string; name: string }>({
-    id: "",
-    name: "",
-  });
+	console.count();
 
-  console.count();
-
-  return (
-    <div className="flex justify-center items-center h-full">
-      <div className="bg-violet-800 w-2/3 h-2/4 rounded-md p-4 flex flex-col">
-        <div className="text-white text-3xl flex flex-col items-center">
-          로그인
-        </div>
-        <section>
-          <span className="text-white">아이디: </span>
-          <Input
-            value={values.id}
-            onChange={(value: string) =>
-              setValues((prev) => ({ ...prev, id: value }))
-            }
-          />
-        </section>
-        <section>
-          <span className="text-white">이름: </span>
-          <Input
-            value={values.name}
-            type="text"
-            onChange={(value: string) =>
-              setValues((prev) => ({ ...prev, name: value }))
-            }
-          />
-        </section>
-        <Button>저장</Button>
-      </div>
-    </div>
-  );
+	return (
+		<SignInProvider>
+			<div>
+				{/* <SignInForm /> */}
+				<SignInForm2 />
+			</div>
+		</SignInProvider>
+	);
 }
 
 export default App;

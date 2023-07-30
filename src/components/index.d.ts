@@ -1,6 +1,7 @@
 type ButtonProps = {
 	children: React.ReactNode;
-	onClick: () => void;
+	onClick?: () => void;
+	type?: 'submit' | 'button' | 'reset';
 };
 
 type InputProps = {
